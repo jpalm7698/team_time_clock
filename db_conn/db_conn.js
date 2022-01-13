@@ -18,6 +18,9 @@ export default {
             cb(
                 fetch(url, headers)
                 .then(response => response.json())
+                .then(data => data.msg)
+                // .then(data => console.log("Message: ", data.msg))
+                // .catch(console.error("Unable to obtain greeting."))
             ), 100)
     },
 

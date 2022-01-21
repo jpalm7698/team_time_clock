@@ -44,6 +44,8 @@ class LogEntry(db.Model):
                              server_default=func.current_timestamp())
     time_updated = db.Column(DateTime(timezone=False),
                              onupdate=func.current_timestamp())
+    time_start = db.Column(DateTime(timezone=False))
+    time_end = db.Column(DateTime(timezone=False))
     workday = db.Column(Date())
     description = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id',
@@ -129,9 +131,12 @@ class LogEntryListResource(Resource):
         user_id = request.json.get('user_id', '')
         workday = parser.parse(request.json.get('workday', ''))
         description = request.json.get('description', '')
+        time_start = parser.parse(request.json.get('time_start', ''))
+        time_end = parser.parse(request.json.get('time_end', ''))
 
         log_entry = LogEntry(user_id=user_id, description=description, 
-                             workday=workday)
+                             workday=workday, time_start=time_start, 
+                             time_end=time_end)
 
         db.session.add(log_entry)
         db.session.commit()
@@ -148,6 +153,8 @@ class LogEntryResource(Resource):
         log = LogEntry.query.filter_by(id=log_id).first()
         log.workday = parser.parse(request.json.get('workday', ''))
         log.description = request.json.get('description', '')
+        log.time_start = parser.parse(request.json.get('time_start', ''))
+        log.time_end = parser.parse(request.json.get('time_end', ''))
         db.session.commit()
         return log_entry_schema.jsonify(log)
 

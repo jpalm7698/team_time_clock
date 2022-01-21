@@ -1,10 +1,13 @@
 // import db_conn from "../../../db_conn/db_conn"
 
+const url = "http://localhost:5000/log-entries/"
+const headers = { Accept: "application/json" };
+
 // initial state
 const state = () => ({
     all: [
         {
-            description: "Here's the first log!",
+            description: "Example Log",
             id: 1,
             time_created: "2021-07-05T11:51:42",
             time_updated: "2021-07-05T11:51:53",
@@ -19,20 +22,24 @@ const getters = {
     currentLogs: state => state.all,
 }
 
-// actions
-// const actions = {
-//     getAllLogs ({ commit }) {
-//         db_conn.getLogs(logs => {
-//             commit('setLogs', logs)
-//         })
-//     },
-// }
-
 // mutations
 const mutations = {
-    setLogs (state, logs) {
+    updateLogs (state, logs) {
         state.all = logs
     },
+}
+
+// actions
+const actions = {
+    updateLogsAsync({ commit }) {
+        fetch(url, headers)
+            .then(response => response.json())
+            .then(data => commit('updateLogs', data))
+
+            .catch((error) => {
+                console.error('error retrieving log entries: ', error);
+            })
+    }
 }
 
 export default {
@@ -40,4 +47,5 @@ export default {
     state,
     getters,
     mutations,
+    actions
 }

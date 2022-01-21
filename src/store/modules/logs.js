@@ -1,5 +1,3 @@
-// import db_conn from "../../../db_conn/db_conn"
-
 const url = "http://localhost:5000/log-entries/"
 const headers = { Accept: "application/json" };
 

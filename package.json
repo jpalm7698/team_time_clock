@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "bootstrap-vue": "^2.21.2",
-    "chart.js": "^3.4.1",
+    "chart.js": "^2.9.4",
     "core-js": "^3.15.2",
     "mutationobserver-shim": "^0.3.7",
     "promise": "^8.1.0",

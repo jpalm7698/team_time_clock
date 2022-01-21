@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table striped hover :items="all" :fields="fields"></b-table>
+    <b-table striped hover responsive :items="all" :fields="fields"></b-table>
   </div>
 </template>
 

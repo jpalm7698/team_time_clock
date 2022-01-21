@@ -40,9 +40,9 @@ class User(db.Model):
 
 class LogEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    time_created = db.Column(DateTime(timezone=True),
+    time_created = db.Column(DateTime(timezone=False),
                              server_default=func.current_timestamp())
-    time_updated = db.Column(DateTime(timezone=True),
+    time_updated = db.Column(DateTime(timezone=False),
                              onupdate=func.current_timestamp())
     workday = db.Column(Date())
     description = db.Column(db.Text, nullable=True)

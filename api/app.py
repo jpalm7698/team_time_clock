@@ -28,6 +28,10 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 api = Api(app)
 
+db.drop_all()
+db.create_all()
+db.session.commit()
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

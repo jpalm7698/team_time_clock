@@ -1,5 +1,6 @@
-const url = "http://localhost:5000/log-entries/"
-const headers = { Accept: "application/json" };
+import axios from 'axios'
+
+const url = "http://localhost:5000/log-entries/";
 
 // initial state
 const state = () => ({
@@ -30,7 +31,7 @@ const mutations = {
 // actions
 const actions = {
     updateLogsAsync({ commit }) {
-        fetch(url, headers)
+        fetch(url)
             .then(response => response.json())
             .then(data => commit('updateLogs', data))
 

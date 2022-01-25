@@ -37,6 +37,22 @@ const actions = {
             .catch((error) => {
                 console.error('error retrieving log entries: ', error);
             })
+    },
+
+    addLogEntryAsync({ dispatch }, form) {
+        console.log(form) 
+
+        // axios stringifys json data automatically
+        axios.post(url, form, {
+            // define data as JSON for flask server;
+            contentType: 'application/json; charset=utf-8',
+
+            // response type from flask server
+            dataType: 'json',
+        })
+        .then(response => console.log("new log response: ", response))
+        .then(dispatch('updateLogsAsync'))
+
     }
 }
 

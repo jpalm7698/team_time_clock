@@ -21,11 +21,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-# Firebase Configuration Files
-firebase-config.js
-.firebaserc
-
-# Firebase logs
-firebase-debug.log
-ui-debug.log

@@ -19,18 +19,7 @@
 
     data: () => ({
         // Note `isActive` is left out and will not appear in the rendered table
-
-        /*
-        User Logged: String
-        Date: Date
-        Description: String
-        Time Start: Time
-        Time End: Time
-        Time of Entry: Current Time Stamp
-        Tags: Array of Strings
-        */
-
-        fields: ['id', 'user_id', 'workday', 'description', 'time_created', 'time_updated'],
+        fields: ['id', 'user_id', 'description', 'date_start', 'time_start', 'date_end', 'time_end'],
       }),
     }
 </script>

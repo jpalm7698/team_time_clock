@@ -1,11 +1,10 @@
-from datetime import date
 from dateutil import parser
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sqlalchemy import func, event
 from sqlalchemy.engine import Engine
-from sqlalchemy.types import DateTime, Date
+from sqlalchemy.types import DateTime, Date, Time
 from flask_restful import Api, Resource
 from flask_cors import CORS
 
@@ -48,9 +47,10 @@ class LogEntry(db.Model):
                              server_default=func.current_timestamp())
     time_updated = db.Column(DateTime(timezone=False),
                              onupdate=func.current_timestamp())
-    time_start = db.Column(DateTime(timezone=False))
-    time_end = db.Column(DateTime(timezone=False))
-    workday = db.Column(Date())
+    date_start = db.Column(Date())
+    date_end = db.Column(Date())
+    time_start = db.Column(Time(timezone=False))
+    time_end = db.Column(Time(timezone=False))
     description = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id',
                         onupdate='CASCADE', ondelete='CASCADE'),
@@ -133,14 +133,15 @@ class LogEntryListResource(Resource):
 
     def post(self):
         user_id = request.json.get('user_id', '')
-        workday = parser.parse(request.json.get('workday', ''))
         description = request.json.get('description', '')
-        time_start = parser.parse(request.json.get('time_start', ''))
-        time_end = parser.parse(request.json.get('time_end', ''))
+        date_start = parser.parse(request.json.get('date_start', '')).date()
+        date_end = parser.parse(request.json.get('date_end', '')).date()
+        time_start = parser.parse(request.json.get('time_start', '')).time()
+        time_end = parser.parse(request.json.get('time_end', '')).time()
 
         log_entry = LogEntry(user_id=user_id, description=description, 
-                             workday=workday, time_start=time_start, 
-                             time_end=time_end)
+                             date_start=date_start, date_end=date_end,
+                             time_start=time_start, time_end=time_end)
 
         db.session.add(log_entry)
         db.session.commit()
@@ -155,10 +156,11 @@ class LogEntryResource(Resource):
 
     def put(self, log_id):
         log = LogEntry.query.filter_by(id=log_id).first()
-        log.workday = parser.parse(request.json.get('workday', ''))
         log.description = request.json.get('description', '')
-        log.time_start = parser.parse(request.json.get('time_start', ''))
-        log.time_end = parser.parse(request.json.get('time_end', ''))
+        log.date_start = parser.parse(request.json.get('date_start', '')).date()
+        log.date_end = parser.parse(request.json.get('date_end', '')).date()
+        log.time_start = parser.parse(request.json.get('time_start', '')).time()
+        log.time_end = parser.parse(request.json.get('time_end', '')).time()
         db.session.commit()
         return log_entry_schema.jsonify(log)
 

@@ -74,14 +74,8 @@ export default {
 
     onSubmit(event) {
       event.preventDefault()
-      alert(JSON.stringify(this.form))
       this.addLogEntryAsync(this.form)
-
-      // if successful
       this.hideModal()
-
-      // if unsuccessful
-
     },
 
     onReset(event) {

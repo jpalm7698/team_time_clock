@@ -18,7 +18,7 @@ const state = () => ({
 
 // getters
 const getters = {
-    currentLogs: state => state.all,
+    currentLogs: state => state.all
 }
 
 // mutations
@@ -30,30 +30,36 @@ const mutations = {
 
 // actions
 const actions = {
-    updateLogsAsync({ commit }) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => commit('updateLogs', data))
+    async updateLogsAsync({ commit }) {
+        // replace the local state's list of logs with the list retrieved from 
+        // the server
 
-            .catch((error) => {
-                console.error('error retrieving log entries: ', error);
-            })
+        let response = await axios.get(url)
+
+        if ( response.status === 200 )
+            commit('updateLogs', response.data)
     },
 
-    addLogEntryAsync({ dispatch }, form) {
-        console.log(form) 
+    async addLogEntryAsync({ dispatch }, form) {
+        // Send the log entry to the server (post request).
+        // If OK, refresh the list of logs from the server.
 
         // axios stringifys json data automatically
-        axios.post(url, form, {
+        let response = await axios.post(url, form, {
             // define data as JSON for flask server;
             contentType: 'application/json; charset=utf-8',
 
             // response type from flask server
             dataType: 'json',
+        }).catch((error) => {
+            console.error('Failed to upload log entry to server.', error)
+            alert('Failed to upload log entry to the server. Please try again.')
         })
-        .then(response => console.log("new log response: ", response))
-        .then(dispatch('updateLogsAsync'))
 
+        if (response.status === 200)
+            dispatch('updateLogsAsync')
+
+        return response
     }
 }
 

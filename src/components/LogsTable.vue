@@ -1,17 +1,19 @@
 <template>
   <div>
-    <b-table striped hover responsive :items="all" :fields="fields"></b-table>
+    <b-table striped hover responsive :items="currentLogs" :fields="fields"></b-table>
   </div>
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     name: 'LogsTable',
-    computed: mapState('logs', ['all']),
+    computed: {
+      ...mapGetters('logs', ['currentLogs']),
+    },
     methods: {
-      ...mapActions('logs', ['updateLogsAsync'])
+      ...mapActions('logs', ['updateLogsAsync']),
     },
     created: function() {
       this.updateLogsAsync();

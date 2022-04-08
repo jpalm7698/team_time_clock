@@ -27,11 +27,6 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 api = Api(app)
 
-db.drop_all()
-db.create_all()
-db.session.commit()
-
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -177,4 +172,6 @@ api.add_resource(LogEntryListResource, '/log-entries/')
 api.add_resource(LogEntryResource, '/log-entries/<int:log_id>/')
 
 if __name__ == '__main__':
+    # initialize the sqlite db and create tables before the flask app starts
+    reset_database()
     app.run(debug=True)

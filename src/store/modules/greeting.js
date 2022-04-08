@@ -1,3 +1,4 @@
+import axios from 'axios'
 const url = "http://localhost:5000/greeting/"
 const headers = { Accept: "application/json" };
 
@@ -18,18 +19,16 @@ const mutations = {
 
 // set of actions are based on vuex.vuejs.org guide
 const actions = {
-    updateGreetingAsync({ commit }) {
-        // some asynchronous operation here - fetch new greeting from flask server
-        fetch(url, headers)
-            .then(response => response.json())
-            // commit mutation
-            .then(data => commit('updateGreeting', data.msg))
+    async updateGreetingAsync({ commit }) {
 
-            // catch block for handling network or cors errors
-            .catch((error) => {
-                console.error('error: ', error);
-                commit('updateGreeting', 'Unable to retrieve greeting.');
-            })
+        try {
+          let response = await axios.get(url);
+          if (response.status === 200)
+            commit("updateGreeting", response.data.msg);
+        } catch (error) {
+          console.error("Error while retrieving greeting", error);
+          commit("updateGreeting", "Unable to retrieve greeting.");
+        }
     }
 }
 
